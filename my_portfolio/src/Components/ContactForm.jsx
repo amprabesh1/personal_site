@@ -13,10 +13,12 @@ import emailjs from "@emailjs/browser";
 
 const ContactForm = () => {
   const [isSent, setIsSent] = useState(false);
+  const [isSending, setIsSending] = useState(false);
   const form = useRef();
   
   const sendEmail = (e) => {
     e.preventDefault();
+    setIsSending(true);
 
     emailjs.sendForm(
       "service_lppx5bb",
@@ -25,14 +27,16 @@ const ContactForm = () => {
       "YOUR_PUBLIC_KEY"
     )
       .then(
-        (result) => {
+        () => {
           document.getElementById("contact_form").reset();
           setIsSent(true);
-          alert('Thank you I will get back to you as soon as possible ! (:');
+          setIsSending(false);
+          alert('Thank you! I will get back to you as soon as possible (:');
         },
         (error) => {
           console.error(error);
-          setIsSent(false);
+          setIsSending(false);
+          alert('Something went wrong. Please try again or email me directly.');
         }
       );
   };  
@@ -110,9 +114,16 @@ const ContactForm = () => {
           </div>
           <div className="w-full flex justify-center">
           <input
-            className="w-[100px] h-[50px] bg-black text-white rounded-xl cursor-pointer hover:opacity-80 mb-5"
+            className={`w-[120px] h-[50px] text-white rounded-xl cursor-pointer transition-all duration-300 mb-5 ${
+              isSent
+                ? 'bg-success hover:opacity-80'
+                : isSending
+                ? 'bg-grayscale-500 cursor-not-allowed'
+                : 'bg-black hover:opacity-80'
+            }`}
             type="submit"
-            value={!isSent ? 'Send' : 'Done!'}
+            disabled={isSending || isSent}
+            value={isSent ? '✓ Sent!' : isSending ? 'Sending...' : 'Send'}
           />
           </div>
         </form>
