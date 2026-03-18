@@ -24,7 +24,7 @@ const ContactForm = () => {
       "service_lppx5bb",
       "template_0zjepq8",
       e.target,
-      "YOUR_PUBLIC_KEY"
+      "yAdUaott7z6uD4dBG"
     )
       .then(
         () => {
